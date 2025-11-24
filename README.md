@@ -8,36 +8,9 @@ The goal is to build a complete full-stack application, from the backend API and
 
 ```
 /home/sherif/backup/task-intern/Rust/
-├── install-hello-proj/
-│   ├── hello
-│   ├── hello.rs
-│   └── helloProject/
-│       ├── Cargo.lock
-│       ├── Cargo.toml
-│       ├── README.md
-│       ├── src/
-│       │   └── main.rs
-│       └── target/
-│           ├── CACHEDIR.TAG
-│           └── debug/
-│               ├── build/
-│               ├── deps/
-│               ├── examples/
-│               ├── helloProject
-│               ├── helloProject.d
-│               └── incremental/
-│                   └── helloProject-0n22mtlvott9n/
-│                       ├── s-hd4d4czx6z-0ya331m-ck1r12e8cg8yewdib9fsw2iqq/
-│                       │   ├── 20qr7gpux6uh4lqbyktvomyxc.o
-│                       │   ├── 51tgo4fxba3bx5b4111m46rlv.o
-│                       │   ├── 7xp0tjvrl5ccei5mrq43qas3v.o
-│                       │   ├── a55pr0g09lnkbfz8xyoupnjot.o
-│                       │   ├── dep-graph.bin
-│                       │   ├── e3fnit5rqjvgb0nsox2colehx.o
-│                       │   ├── ex1hvfuwiw33xi7hxmd84lu02.o
-│                       │   ├── query-cache.bin
-│                       │   └── work-products.bin
-│                       └── s-hd4d4czx6z-0ya331m.lock
+├── compoundDtatType/
+├── function/
+├── install-hello-proj/S
 ├── premitiveDataType/
 ├── README.md
 └── slack/
