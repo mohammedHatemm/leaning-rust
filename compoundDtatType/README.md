@@ -176,3 +176,90 @@ match msg {
 | --------------------------------------------------------- | --------------------------------------------------------------------------------- |
 | A way to define a type that can be one of a few different variants. | It's just a list of constants.                                                    |
 | A type that can hold different kinds of values at different times. | Enums are only for simple, valueless flags.                                     |
+
+## 5. String vs. &str (String Slice)
+
+Rust has two main types of strings: `String` and `&str`. Understanding the difference is crucial for writing efficient and correct Rust code.
+
+### Explanation and Syntax
+
+- **`String`**: A growable, mutable, owned, UTF-8 encoded string type. When you create a `String`, it allocates memory on the heap. This means you can modify it, such as by adding more text to it. Because it's owned, when the `String` goes out of scope, its memory is automatically freed.
+
+- **`&str`**: Also known as a "string slice," it's an immutable reference to a sequence of UTF-8 bytes. A `&str` is a "view" into string data owned by someone else. It can point to a part of a `String`, a string literal embedded in the binary, or any other string data. String literals (`"hello"`) are of type `&'static str`.
+
+**Syntax:**
+```rust
+// A string literal, which is a slice (&str)
+let s1 = "hello world";
+
+// A String, created from a string literal
+let mut s2 = String::from("hello");
+
+// You can modify a String
+s2.push_str(", world!");
+
+// You can create a slice from a String
+let slice_of_s2 = &s2[0..5]; // slice_of_s2 is "hello"
+
+println!("{}", s2); // prints "hello, world!"
+```
+
+### Mutability in Rust
+
+By default, variables in Rust are **immutable**. This is one of Rust's core principles to enforce safety and prevent unintended changes to data.
+
+- To make a variable mutable, you must use the `mut` keyword.
+- Rust as a language is not "mutable" or "immutable"; it provides the tools for you to choose the right level of mutability for your needs.
+
+```rust
+let immutable_var = 5;
+// immutable_var = 6; // This would cause a compile-time error!
+
+let mut mutable_var = 10;
+mutable_var = 11; // This is allowed
+```
+
+| Good Practice ✅                                                              | Bad Practice ❌                                                                 |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Prefer immutable variables (`let`) unless you explicitly need to change them. | Making all variables mutable (`let mut`) by default.                            |
+| Use `&str` for function arguments to be flexible and accept any string type.  | Using `String` for function arguments when you only need to read the string.    |
+
+### Stack vs. Heap
+
+Memory in a Rust program is managed in two primary locations: the stack and the heap.
+
+- **Stack**:
+  - **How it works**: Last-In, First-Out (LIFO). Very fast because it just involves moving a single pointer (the "stack pointer").
+  - **What goes here**: Data with a known, fixed size at compile time. This includes primitive types (like `i32`, `bool`), tuples, arrays, and references (`&str`, `&i32`).
+  - **Analogy**: A stack of plates. You can only add or remove plates from the top.
+
+- **Heap**:
+  - **How it works**: When you need to store data but don't know the size at compile time, or if the size might change, you request a certain amount of space from the operating system. The OS finds an empty spot (the "heap") and returns a **pointer** to that location. This is slower than the stack.
+  - **What goes here**: Data that can grow or change size, like `String` and `Vec<T>`.
+  - **Analogy**: A restaurant seating. You ask for a table for a certain number of people, and the host finds a spot for you.
+
+| Type      | Stored on... | Why?                                                              |
+| --------- | ------------ | ----------------------------------------------------------------- |
+| `i32`     | Stack        | Fixed size known at compile time.                                 |
+| `&str`    | Stack        | It's a reference (a pointer and a length), which has a fixed size. |
+| `String`  | Heap         | The actual text data is on the heap because it can grow.          |
+
+### References vs. Pointers
+
+- **References (`&`)**:
+  - This is Rust's safe way of "borrowing" data without taking ownership.
+  - The Rust compiler's **borrow checker** guarantees that references will **always** point to valid data. You cannot have a "null reference" or a reference to data that has been freed.
+  - **Syntax**: `&` (borrow) and `*` (dereference).
+
+- **Raw Pointers (`*const T` and `*mut T`)**:
+  - These are like pointers in C/C++. They are just memory addresses.
+  - You can have null pointers, pointers to invalid memory, or pointers to data of the wrong type.
+  - Working with raw pointers is considered **`unsafe`** in Rust. You must wrap any code that uses them in an `unsafe` block, signaling to the compiler that you are manually upholding memory safety.
+  - **Use Case**: Primarily for interoperating with other languages (like C) or for building low-level abstractions.
+
+| Right Explanation 👍                                      | Wrong Explanation 👎                                                              |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| A `&str` is an immutable view into string data.           | A `&str` is a string that can't be changed. (The binding can be mutable).         |
+| A `String` is an owned, heap-allocated string.            | `String` and `&str` are interchangeable. (They are not; conversion is needed).    |
+| References are guaranteed by the compiler to be valid.    | References and pointers are the same thing in Rust.                               |
+
